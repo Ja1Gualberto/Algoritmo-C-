@@ -249,12 +249,54 @@ void devolucaoLivro(){
 
     printf("Livro devolvido com sucesso.\n");
 }
+void trocar(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int particionar(int arr[], int inic, int fim) {
+    int pivot = arr[fim];
+    int i = (inic- 1);
+
+    for (int j = inic; j <= fim - 1; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            trocar(&arr[i], &arr[j]);
+        }
+    }
+    trocar(&arr[i + 1], &arr[fim]);
+    return (i + 1);
+}
+
+void quicksort(int arr[], int inic, int fim) {
+    if (inic < fim) {
+        int pi = particionar(arr, inic, fim);
+
+        quicksort(arr, inic, pi - 1);
+        quicksort(arr, pi + 1, fim);
+    }
+}
+void ordenarLivrosPorID() {
+    int idsLivros[num_livros];
+
+    for (int i = 0; i < num_livros; i++) {
+        idsLivros[i] = livros[i].id;
+    }
+
+    quicksort(idsLivros, 0, num_livros - 1);
+
+    // Atualizar os IDs dos livros
+    for (int i = 0; i < num_livros; i++) {
+        livros[i].id = idsLivros[i];
+    }
+}
 
 int main(){
     int op;
     do{
      printf("--------Menu-Livraria--------\n");
-     printf("0-sair\n1-Cadastrar Livro\n2-Cadastrar Usuario\n3-Livros em Estoque\n4-Usuarios Cadastrados\n\n---------Alteracoes---------\n5-Atualizar Livro\n6-Atualizar Usuario\n7-Excluir Livro\n8-Excluir Usuario\n9-Emprestimo de Livros\n10-Devolução de Livros\n");
+     printf("0-sair\n1-Cadastrar Livro\n2-Cadastrar Usuario\n3-Livros em Estoque\n4-Usuarios Cadastrados\n\n---------Alteracoes---------\n5-Atualizar Livro\n6-Atualizar Usuario\n7-Excluir Livro\n8-Excluir Usuario\n9-Emprestimo de Livros\n10-Devolução de Livros\n11-Ordenar Livro por ID\n");
      scanf("%i", &op);
 
     switch(op){
@@ -288,6 +330,9 @@ int main(){
       case 10:
         devolucaoLivro();
       break;
+      case 11:
+        ordenarLivrosPorID();
+        break;
 }}while(op != 0);
 
     return 0;
