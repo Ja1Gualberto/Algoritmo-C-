@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <conio.h>
 
 #define MAX_LIVROS 10
 #define MAX_EMPRESTIMOS 3
@@ -249,89 +250,102 @@ void devolucaoLivro(){
 
     printf("Livro devolvido com sucesso.\n");
 }
-void trocar(int *a, int *b) {
-    int temp = *a;
-    *a = *b;
-    *b = temp;
+//Explicando: isso vai troca os itens(x por y)
+void troca(livro *x, livro *y){
+	livro local = *x;
+	*x = *y;
+	*x = local;
 }
-
-int particionar(int arr[], int inic, int fim) {
-    int pivot = arr[fim];
-    int i = (inic- 1);
-
-    for (int j = inic; j <= fim - 1; j++) {
-        if (arr[j] < pivot) {
-            i++;
-            trocar(&arr[i], &arr[j]);
-        }
-    }
-    trocar(&arr[i + 1], &arr[fim]);
-    return (i + 1);
+//Explicando: Separa em duas partições (letras que vem antes do livro escolhido e letras depois do numero escolhido)
+int particiona(livro arr[], int menor, int maior){
+	char *pivot = arr[maior].nome_livro;
+	int i = menor - 1;
+	
+	for(int j = menor; j <= maior - 1; j++)
+	{
+		if(strcmp (arr[j].nome_livro, pivot) < 0)
+		{
+			i++;
+			troca(&arr[i], &arr[j]);
+		}
+	}
+	troca(&arr[i + 1], &arr[maior]);
+	return (i +1);
 }
-
-void quicksort(int arr[], int inic, int fim) {
-    if (inic < fim) {
-        int pi = particionar(arr, inic, fim);
-
-        quicksort(arr, inic, pi - 1);
-        quicksort(arr, pi + 1, fim);
-    }
+//Explicando: a função que vai organizar usando "particiona""troca"
+void quicksort(livro arr[], int menor, int maior){
+	if(menor < maior)
+	{
+		int pi = particiona(arr, menor, maior);
+		
+		quicksort(arr, menor, pi - 1);
+		quicksort(arr, pi + 1, maior);
+	}
 }
-void ordenarLivrosPorID() {
-    int idsLivros[num_livros];
-
-    for (int i = 0; i < num_livros; i++) {
-        idsLivros[i] = livros[i].id;
+//Explicação: Aqui usa o quicksort
+void organLivro(){
+    if (num_livros > 1)
+    {
+        quicksort(livros, 0, num_livros -1);
     }
-
-    quicksort(idsLivros, 0, num_livros - 1);
-
-    // Atualizar os IDs dos livros
-    for (int i = 0; i < num_livros; i++) {
-        livros[i].id = idsLivros[i];
+    printf("Livros organizados por nome\n");
+    for (int i = 0; i < num_livros; i++)
+    {
+        printf("%d - %s - %s - %2lf\n", livros[i].id, livros[i].nome_livro, livros[i].autor, livros[i].preco);
     }
+    
 }
-
 int main(){
     int op;
     do{
      printf("--------Menu-Livraria--------\n");
-     printf("0-sair\n1-Cadastrar Livro\n2-Cadastrar Usuario\n3-Livros em Estoque\n4-Usuarios Cadastrados\n\n---------Alteracoes---------\n5-Atualizar Livro\n6-Atualizar Usuario\n7-Excluir Livro\n8-Excluir Usuario\n9-Emprestimo de Livros\n10-Devolução de Livros\n11-Ordenar Livro por ID\n");
+     printf("0-sair\n1-Cadastrar Livro\n2-Cadastrar Usuario\n3-Livros em Estoque\n4-Usuarios Cadastrados\n\n---------Alteracoes---------\n5-Atualizar Livro\n6-Atualizar Usuario\n7-Excluir Livro\n8-Excluir Usuario\n9-Emprestimo de Livros\n10-Devolução de Livros\n11-Organizar Livros\n");
      scanf("%i", &op);
 
     switch(op){
       case 1:
+        system ("cls");
         cadastrolivro();
         break;
       case 2:
+        system ("cls");
         CadastroUsuario();
         break;
       case 3:
+        system ("cls");
         LivrosDisponiveisEstoque();
         break;
       case 4:
+        system ("cls");  
         MostrarUsuariosCadastrados();
         break;
       case 5:
+        system ("cls");  
         atualizarLivro();
         break;
       case 6:
+        system ("cls");
          atualizarUsuario();
         break;
       case 7:
+        system ("cls");  
         excluirLivro();
         break;
       case 8:
+        system ("cls");  
         excluirUsuario();
         break;
       case 9:
+        system ("cls");
         emprestimoLivros();
         break;
       case 10:
+        system ("cls");
         devolucaoLivro();
-      break;
+        break;
       case 11:
-        ordenarLivrosPorID();
+        system ("cls");
+        organLivro();
         break;
 }}while(op != 0);
 
