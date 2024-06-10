@@ -5,6 +5,7 @@
 #include <conio.h>
 
 #define MAX_LIVROS 10
+#define MAX_USUARIOS 10
 #define MAX_EMPRESTIMOS 3
 #define PRAZO_DEVOLUCAO 15
 
@@ -130,7 +131,7 @@ void atualizarLivro(){
     printf("Qual é o ID do livro que deseja alterar\n");
     scanf("%d", &idLivro);
 
-    for(int i = 0; i < MAX_LIVROS; i++){
+    for(int i = 0; i < num_livros; i++){
         if(livros[i].id == idLivro){
          printf("Informe o novo nome do livro: ");
          scanf("%s", altera_livro);
@@ -154,12 +155,12 @@ void atualizarLivro(){
     void atualizarUsuario(){
      int idUsuario;
      char altera_usuario[100];
-     char altera_cpf[12];
+     char altera_cpf[20];
 
      printf("Qual e o ID do usuario: ");
      scanf("%d", &idUsuario);
 
-     for(int i = 0;i < MAX_LIVROS; i ++){
+     for(int i = 0;i < num_usuarios; i ++){
         if(usuarios[i].id == idUsuario){
          printf("Informe o novo nome do usuario: ");
          scanf("%s", altera_usuario);
@@ -250,13 +251,13 @@ void devolucaoLivro(){
 
     printf("Livro devolvido com sucesso.\n");
 }
-//Explicando: isso vai troca os itens(x por y)
+//Explicando (Char): isso vai troca os itens(x por y)
 void troca(livro *x, livro *y){
 	livro local = *x;
 	*x = *y;
-	*x = local;
+	*y = local;
 }
-//Explicando: Separa em duas partições (letras que vem antes do livro escolhido e letras depois do numero escolhido)
+//Explicando(char): Separa em duas partições (letras que vem antes do livro escolhido e letras depois do numero escolhido)
 int particiona(livro arr[], int menor, int maior){
 	char *pivot = arr[maior].nome_livro;
 	int i = menor - 1;
@@ -270,9 +271,51 @@ int particiona(livro arr[], int menor, int maior){
 		}
 	}
 	troca(&arr[i + 1], &arr[maior]);
-	return (i +1);
+	return (i + 1);
 }
-//Explicando: a função que vai organizar usando "particiona""troca"
+int particionaID(livro arr[], int menor, int maior)
+{
+    int pivo = arr[maior].id;
+    int i = menor - 1;
+    
+    for (int v = menor; v <= maior - 1; v++)
+    {
+        if (arr[v].id < pivo)
+        {
+            i++;
+            troca(&arr[i], &arr[v]);
+        }
+        
+    }
+    troca(&arr[i + 1], &arr[maior]);
+    return (i + 1);
+}
+
+void quiacksortID(livro arr[], int menor, int maior)
+{
+    if (menor < maior)
+    {
+        int pi = particionaID(arr, menor, maior);
+
+        quiacksortID(arr, menor, pi - 1);
+        quiacksortID(arr, pi + 1, maior);
+    }
+
+}
+void organLivroID()
+{
+    if (num_livros > 1)
+    {
+        quiacksortID(livros, 0, num_livros - 1);
+    }
+    printf("Livros Organizados por ID\n");
+    for (int i = 0; i < num_livros; i++)
+    {
+       printf("%d - %s - %s - %2lf\n", livros[i].id, livros[i].nome_livro, livros[i].autor, livros [i].preco);
+    }
+    
+}
+//Explicando (Char): a função que vai organizar usando "particiona""troca"
 void quicksort(livro arr[], int menor, int maior){
 	if(menor < maior)
 	{
@@ -282,7 +325,7 @@ void quicksort(livro arr[], int menor, int maior){
 		quicksort(arr, pi + 1, maior);
 	}
 }
-//Explicação: Aqui usa o quicksort
+//Explicação (Char): Aqui usa o quicksort
 void organLivro(){
     if (num_livros > 1)
     {
@@ -296,58 +339,135 @@ void organLivro(){
     
 }
 int main(){
-    int op;
-    do{
-     printf("--------Menu-Livraria--------\n");
-     printf("0-sair\n1-Cadastrar Livro\n2-Cadastrar Usuario\n3-Livros em Estoque\n4-Usuarios Cadastrados\n\n---------Alteracoes---------\n5-Atualizar Livro\n6-Atualizar Usuario\n7-Excluir Livro\n8-Excluir Usuario\n9-Emprestimo de Livros\n10-Devolução de Livros\n11-Organizar Livros\n");
-     scanf("%i", &op);
-
-    switch(op){
-      case 1:
-        system ("cls");
-        cadastrolivro();
-        break;
-      case 2:
-        system ("cls");
-        CadastroUsuario();
-        break;
-      case 3:
-        system ("cls");
-        LivrosDisponiveisEstoque();
-        break;
-      case 4:
-        system ("cls");  
-        MostrarUsuariosCadastrados();
-        break;
-      case 5:
-        system ("cls");  
-        atualizarLivro();
-        break;
-      case 6:
-        system ("cls");
-         atualizarUsuario();
-        break;
-      case 7:
-        system ("cls");  
-        excluirLivro();
-        break;
-      case 8:
-        system ("cls");  
-        excluirUsuario();
-        break;
-      case 9:
-        system ("cls");
-        emprestimoLivros();
-        break;
-      case 10:
-        system ("cls");
-        devolucaoLivro();
-        break;
-      case 11:
-        system ("cls");
-        organLivro();
-        break;
-}}while(op != 0);
-
+    int op1, op2, op3;
+    do {
+        printf("--------Menu-Livraria--------\n");
+        printf("01-Adicionar\n02-Visualizar\n03-Alterar\n0-Sair\n");
+        printf("-----------------------------\n");
+        scanf("%i", &op1);
+        switch (op1) {
+            case 1:
+                do 
+                {
+                    printf("--------Menu-Adicionar--------\n");
+                    printf("01-Cadastrar Livros\n02-Cadastrar Usuario\n03-Emprestimo de Livro\n04-Devolver Livros\n0-Voltar\n");
+                    printf("--------------------------------\n");
+                    scanf("%i", &op2);
+                    switch (op2) 
+                    {
+                        case 1:
+                            system("cls");
+                            cadastrolivro();
+                            break;
+                        case 2:
+                            system("cls");
+                            CadastroUsuario();
+                            break;
+                        case 3:
+                            system("cls");
+                            emprestimoLivros();
+                            break;
+                        case 4:
+                            system("cls");
+                            devolucaoLivro();
+                            break;
+                        case 0:
+                            break;
+                        default:
+                            printf("Opcao invalida\n");
+                            break;
+                    }
+                } while (op2 != 0);
+                break;
+            case 2:
+                do 
+                {
+                    printf("--------Menu-Visualizar--------\n");
+                    printf("01-Visualizar Livros\n02-Visualizar Usuarios\n0-Voltar\n");
+                    printf("--------------------------------\n");
+                    scanf("%i", &op2);
+                    switch (op2) {
+                        case 1:
+                            do
+                            {
+                                printf("--------Menu-Visualizar--------\n");
+                                printf ("01-Visualizar Livros\n02-Organizar (A-Z)\n03- Organiza por Id\n0-Sair");
+                                scanf("%i", &op3);
+                                switch (op3)
+                                {
+                                case 1:
+                                    system("cls");
+                                    LivrosDisponiveisEstoque();
+                                    break;
+                                case 2:
+                                    system("cls");
+                                    organLivro();
+                                    break;
+                                case 3:
+                                    system("cls");
+                                    organLivroID();
+                                    break;
+                                case 0:
+                                break;
+                                default:
+                                    printf("Funçãp não existe");
+                                    break;
+                                }
+                            } while (op3 != 0);
+                            
+                            break;
+                        case 2:
+                            system("cls");
+                            MostrarUsuariosCadastrados();
+                            break;
+                        case 0:
+                            break;
+                        default:
+                            printf("Opcao invalida\n");
+                            break;
+                    }
+                } while (op2 != 0);
+                break;
+            case 3:
+                do 
+                {
+                    printf("--------Menu-Alterar--------\n");
+                    printf("01-Atualizar Livros\n02-Atualizar Usuarios\n03-Excluir Livros\n04-Excluir Usuarios\n0-Voltar\n");
+                    printf("-----------------------------\n");
+                    scanf("%i", &op2);
+                    switch (op2) {
+                        case 1:
+                            system("cls");
+                            atualizarLivro();
+                            break;
+                        case 2:
+                            system("cls");
+                            atualizarUsuario();
+                            break;
+                        case 3:
+                            system("cls");
+                            excluirLivro();
+                            break;
+                        case 4:
+                            system("cls");
+                            excluirUsuario();
+                            break;
+                        case 0:
+                            break;
+                        default:
+                            printf("Opcao invalida\n");
+                            break;
+                    }
+                } while (op2 != 0);
+                break;
+            case 0:
+                printf("Saindo...\n");
+                break;
+            default:
+                printf("Opcao invalida\n");
+                break;
+        }
+    } while (op1 != 0);
+    
     return 0;
 }
