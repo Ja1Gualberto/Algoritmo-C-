@@ -9,11 +9,7 @@
 #define MAX_EMPRESTIMOS 3
 #define PRAZO_DEVOLUCAO 15
 
-using std::string;
-using std::vector;
-using std::cout;
-using std::cin;
-using std::endl;
+using namespace std;
 
 struct Livro {
     int id;
