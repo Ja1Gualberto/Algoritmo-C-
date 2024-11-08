@@ -251,11 +251,33 @@ void organizarLivrosPorIDquickS() {
     }
 }
 
+void buscarLivroPorID(int id) {
+    sort(livros.begin(), livros.end(), [](const Livro& a, const Livro& b) {
+        return a.id < b.id;
+    });
+
+    int inicio = 0;
+    int fim = livros.size() - 1;
+    while (inicio <= fim) {
+        int meio = inicio + (fim - inicio) / 2;
+        if (livros[meio].id == id) {
+            cout << "Livro encontrado: " << livros[meio].id << " - " << livros[meio].nome_livro 
+                 << " - " << livros[meio].autor << " - R$" << livros[meio].preco << "\n";
+            return;
+        } else if (livros[meio].id < id) {
+            inicio = meio + 1;
+        } else {
+            fim = meio - 1;
+        }
+    }
+    cout << "Nenhum livro encontrado com o ID informado.\n";
+}
+
 int main() {
     int op1, op2, op3;
     do {
         cout << "--------Menu-Livraria--------\n";
-        cout << "01-Adicionar\n02-Visualizar\n03-Alterar\n0-Sair\n";
+        cout << "01-Adicionar\n02-Visualizar\n03-Alterar\n04-Buscar Livro por ID\n0-Sair\n";
         cin >> op1;
         switch (op1) {
             case 1:
@@ -344,6 +366,13 @@ int main() {
                     }
                 } while (op3 != 0);
                 break;
+            case 4: {
+                int id;
+                cout << "Informe o ID do livro que deseja buscar: ";
+                cin >> id;
+                buscarLivroPorID(id);
+                break;
+            }
             case 0:
                 cout << "Saindo...\n";
                 break;
