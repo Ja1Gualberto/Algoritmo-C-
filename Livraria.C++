@@ -191,21 +191,61 @@ void excluirUsuario() {
     cout << "Usuário excluído com sucesso\n";
 }
 
-void organizarLivrosPorNome() {
-    std::sort(livros.begin(), livros.end(), [](const Livro& a, const Livro& b) {
-        return a.nome_livro < b.nome_livro;
-    });
-    cout << "Livros organizados por nome:\n";
+int particionaPorNome(vector<Livro>& livros, int inicio, int fim) {
+    string pivot = livros[fim].nome_livro;
+    int i = inicio - 1;
+
+    for (int j = inicio; j < fim; j++) {
+        if (livros[j].nome_livro < pivot) {
+            i++;
+            swap(livros[i], livros[j]);
+        }
+    }
+    swap(livros[i + 1], livros[fim]);
+    return i + 1;
+}
+
+void quickSortPorNome(vector<Livro>& livros, int inicio, int fim) {
+    if (inicio < fim) {
+        int pi = particionaPorNome(livros, inicio, fim);
+        quickSortPorNome(livros, inicio, pi - 1);
+        quickSortPorNome(livros, pi + 1, fim);
+    }
+}
+
+int particionaPorID(vector<Livro>& livros, int inicio, int fim) {
+    int pivot = livros[fim].id;
+    int i = inicio - 1;
+
+    for (int j = inicio; j < fim; j++) {
+        if (livros[j].id < pivot) {
+            i++;
+            swap(livros[i], livros[j]);
+        }
+    }
+    swap(livros[i + 1], livros[fim]);
+    return i + 1;
+}
+
+void quickSortPorID(vector<Livro>& livros, int inicio, int fim) {
+    if (inicio < fim) {
+        int pi = particionaPorID(livros, inicio, fim);
+        quickSortPorID(livros, inicio, pi - 1);
+        quickSortPorID(livros, pi + 1, fim);
+    }
+}
+
+void organizarLivrosPorNomesQuickS() {
+    quickSortPorNome(livros, 0, livros.size() - 1);
+    cout << "Livros organizados por nome (Quick Sort):\n";
     for (const auto& livro : livros) {
         cout << livro.id << " - " << livro.nome_livro << " - " << livro.autor << " - " << livro.preco << "\n";
     }
 }
 
-void organizarLivrosPorID() {
-    std::sort(livros.begin(), livros.end(), [](const Livro& a, const Livro& b) {
-        return a.id < b.id;
-    });
-    cout << "Livros organizados por ID:\n";
+void organizarLivrosPorIDquickS() {
+    quickSortPorID(livros, 0, livros.size() - 1);
+    cout << "Livros organizados por ID (Quick Sort):\n";
     for (const auto& livro : livros) {
         cout << livro.id << " - " << livro.nome_livro << " - " << livro.autor << " - " << livro.preco << "\n";
     }
@@ -260,11 +300,11 @@ int main() {
                             break;
                         case 3:
                             system("cls");
-                            organizarLivrosPorNome();
+                            organizarLivrosPorNomesQuickS();
                             break;
                         case 4:
                             system("cls");
-                            organizarLivrosPorID();
+                            organizarLivrosPorIDquickS();
                             break;
                         case 0:
                             break;
