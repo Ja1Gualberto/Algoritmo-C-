@@ -190,7 +190,7 @@ void excluirUsuario() {
     }
     cout << "Usuário excluído com sucesso\n";
 }
-
+//Ted
 int particionaPorNome(vector<Livro>& livros, int inicio, int fim) {
     string pivot = livros[fim].nome_livro;
     int i = inicio - 1;
@@ -204,7 +204,7 @@ int particionaPorNome(vector<Livro>& livros, int inicio, int fim) {
     swap(livros[i + 1], livros[fim]);
     return i + 1;
 }
-
+//Ted
 void quickSortPorNome(vector<Livro>& livros, int inicio, int fim) {
     if (inicio < fim) {
         int pi = particionaPorNome(livros, inicio, fim);
@@ -212,7 +212,7 @@ void quickSortPorNome(vector<Livro>& livros, int inicio, int fim) {
         quickSortPorNome(livros, pi + 1, fim);
     }
 }
-
+//Ted
 int particionaPorID(vector<Livro>& livros, int inicio, int fim) {
     int pivot = livros[fim].id;
     int i = inicio - 1;
@@ -226,7 +226,7 @@ int particionaPorID(vector<Livro>& livros, int inicio, int fim) {
     swap(livros[i + 1], livros[fim]);
     return i + 1;
 }
-
+//Ted
 void quickSortPorID(vector<Livro>& livros, int inicio, int fim) {
     if (inicio < fim) {
         int pi = particionaPorID(livros, inicio, fim);
@@ -234,7 +234,7 @@ void quickSortPorID(vector<Livro>& livros, int inicio, int fim) {
         quickSortPorID(livros, pi + 1, fim);
     }
 }
-
+//Ted
 void organizarLivrosPorNomesQuickS() {
     quickSortPorNome(livros, 0, livros.size() - 1);
     cout << "Livros organizados por nome (Quick Sort):\n";
@@ -242,7 +242,7 @@ void organizarLivrosPorNomesQuickS() {
         cout << livro.id << " - " << livro.nome_livro << " - " << livro.autor << " - " << livro.preco << "\n";
     }
 }
-
+//Ted
 void organizarLivrosPorIDquickS() {
     quickSortPorID(livros, 0, livros.size() - 1);
     cout << "Livros organizados por ID (Quick Sort):\n";
@@ -250,7 +250,7 @@ void organizarLivrosPorIDquickS() {
         cout << livro.id << " - " << livro.nome_livro << " - " << livro.autor << " - " << livro.preco << "\n";
     }
 }
-
+//Ted
 void buscarLivroPorID(int id) {
     sort(livros.begin(), livros.end(), [](const Livro& a, const Livro& b) {
         return a.id < b.id;
@@ -322,11 +322,11 @@ int main() {
                             break;
                         case 3:
                             system("cls");
-                            organizarLivrosPorNomesQuickS();
+                            organizarLivrosPorNomesQuickS();//Ted - Ordenação (Quick Sort)
                             break;
                         case 4:
                             system("cls");
-                            organizarLivrosPorIDquickS();
+                            organizarLivrosPorIDquickS();//Ted - Ordenação (Quick Sort)
                             break;
                         case 0:
                             break;
@@ -370,7 +370,7 @@ int main() {
                 int id;
                 cout << "Informe o ID do livro que deseja buscar: ";
                 cin >> id;
-                buscarLivroPorID(id);
+                buscarLivroPorID(id);//Ted - Busca (Binaria)
                 break;
             }
             case 0:
