@@ -273,6 +273,25 @@ void buscarLivroPorID(int id) {
     cout << "Nenhum livro encontrado com o ID informado.\n";
 }
 
+void selectionSortPorPreco(vector<Livro>& livros) {
+    int n = livros.size();
+    for (int i = 0; i < n - 1; i++) {
+        int minIndex = i;
+        for (int j = i + 1; j < n; j++) {
+            if (livros[j].preco < livros[minIndex].preco) {
+                minIndex = j;
+            }
+        }
+        if (minIndex != i) {
+            swap(livros[i], livros[minIndex]);
+        }
+    }
+    cout << "Livros organizados por preço (Selection Sort):\n";
+    for (const auto& livro : livros) {
+        cout << livro.id << " - " << livro.nome_livro << " - " << livro.autor << " - " << livro.preco << "\n";
+    }
+}
+
 int main() {
     int op1, op2, op3;
     do {
@@ -309,7 +328,7 @@ int main() {
             case 2:
                 do {
                     cout << "--------Menu-Visualizar--------\n";
-                    cout << "01-Consultar Livros Disponiveis\n02-Consultar Usuario\n03-Organizar Livros por Nome\n04-Organizar Livros por ID\n0-Voltar\n";
+                    cout << "01-Consultar Livros Disponiveis\n02-Consultar Usuario\n03-Organizar Livros por Nome\n04-Organizar Livros por ID\n05 - Seleçao por preco\n0-Voltar\n";
                     cin >> op2;
                     switch (op2) {
                         case 1:
@@ -328,6 +347,9 @@ int main() {
                             system("cls");
                             organizarLivrosPorIDquickS();//Ted - Ordenação (Quick Sort)
                             break;
+                        case 5:
+                        system("cls");
+                        selectionSortPorPreco(livros);//Ted Seleção (Selection Sort)
                         case 0:
                             break;
                         default:
